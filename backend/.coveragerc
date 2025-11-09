@@ -1,0 +1,7 @@
+[run]
+command_line = manage.py test
+omit = 
+    */migrations/*
+    manage.py
+    tests.py
+    __init__.py

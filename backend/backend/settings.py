@@ -126,4 +126,4 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 load_dotenv()
 
 IGDB_CLIENT_ID = os.getenv("IGDB_CLIENT_ID")
-IGDB_CLIENT_SECRET = os.getenv("IGDB_CLIENT_SECRET")
+IGDB_TOKEN = os.getenv("IGDB_TOKEN")
