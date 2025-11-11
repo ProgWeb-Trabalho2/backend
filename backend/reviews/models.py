@@ -15,4 +15,4 @@ class Review(models.Model):
         return f"Avaliação de {self.user.username} para {self.game.name}: nota {self.rating}"
 
     class Meta:
-        unique = ['user', 'game']
+        unique_together = ['user', 'game']
