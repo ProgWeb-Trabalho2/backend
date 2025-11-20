@@ -17,8 +17,26 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from django.urls.conf import include
+from rest_framework import routers, permissions
+from drf_yasg import openapi
+from drf_yasg.views import get_schema_view
+
+
+schema_view = get_schema_view(
+    openapi.Info(
+        title='API de exemplo',
+        default_version='v1',
+        description='Descrição da API',
+        contact=openapi.Contact(email="marcello.jao1611@gmail.com"),
+        license=openapi.License(name='GNU GPLv3'),
+    ),
+    public=True,
+    permission_classes=(permissions.AllowAny,),
+)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('games/', include('games.urls'))
+    path('games/', include('games.urls')),
+    path('swagger/', schema_view.with_ui('swagger',
+         cache_timeout=0), name='schema-swagger-ui'),
 ]

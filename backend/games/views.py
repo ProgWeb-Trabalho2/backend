@@ -5,7 +5,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 
 
-class GamesView(APIView):
+class GameListInsertView(APIView):
     def get(self, request):
         queryset = Game.objects.all().order_by('name')
         serializer = GameSerializer(queryset, many=True)
@@ -25,12 +25,14 @@ class GamesView(APIView):
                 status=status.HTTP_400_BAD_REQUEST
             )
 
+
+class GameDeleteView(APIView):
     def delete(self, request, pk):
         try:
             game = Game.objects.get(pk=pk)
         except Game.DoesNotExist:
             return Response(
-                {"error": "Jogo não encontrafo"},
+                {"error": "Jogo não encontrado"},
                 status=status.HTTP_404_NOT_FOUND
             )
 

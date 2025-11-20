@@ -28,7 +28,7 @@ class TestGamesView(TestCase):
             summary='mate deuses nórdicos'
         )
 
-        url = reverse('game-list')
+        url = reverse('game-list-create')
         response = self.client.get(url)
 
         games = Game.objects.all().order_by('name')
@@ -39,7 +39,7 @@ class TestGamesView(TestCase):
         self.assertEqual(len(response.data), 2)
 
     def test_post_game_sucesso(self):
-        url = reverse('insert-game')
+        url = reverse('game-list-create')
 
         payload = {
             "name": "last of us",
@@ -65,7 +65,7 @@ class TestGamesView(TestCase):
         self.assertEqual(response.data, serializer.data)
 
     def test_post_game_falha(self):
-        url = reverse('insert-game')
+        url = reverse('game-list-create')
 
         payload = {
             "erro": "teste de erro"
@@ -87,7 +87,7 @@ class TestGamesView(TestCase):
             release_date='2013-09-07',
             summary='jogo do encanador italiano'
         )
-        url = reverse('delete-game', args=[game.id])
+        url = reverse('game-delete', args=[game.id])
 
         response = self.client.delete(url)
 
@@ -95,9 +95,9 @@ class TestGamesView(TestCase):
         self.assertFalse(Game.objects.filter(id=game.id).exists())
 
     def test_delete_game_falha(self):
-        url = reverse('delete-game', args=[3])
+        url = reverse('game-delete', args=[3])
 
         response = self.client.delete(url)
 
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
-        self.assertEqual(response.data, {"error": "Jogo não encontrafo"})
+        self.assertEqual(response.data, {"error": "Jogo não encontrado"})
