@@ -39,5 +39,6 @@ urlpatterns = [
     path('swagger/', schema_view.with_ui('swagger',
          cache_timeout=0), name='schema-swagger-ui'),
     path('games/', include('games.urls')),
+    path('reviews/', include('reviews.urls')),
     path('accounts/', include('accounts.urls')),
 ]
