@@ -7,10 +7,50 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 
 
+class LoginView(ObtainAuthToken):
+    def post(self, request):
+        username = request.data.get("username")
+        password = request.data.get("password")
+
+        if not username or not password:
+            return Response(
+                {"error": "Usuário e senha obrigatórios"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        if not User.objects.filter(username=username).exists():
+            return Response(
+                {"error": "Usuário não existe"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        User.objects.get(username=username)
+
+        serializer = self.serializer_class(
+            data=request.data,
+            context={'request': request}
+        )
+        serializer.is_valid(raise_exception=True)
+        user = serializer.validated_data['user']
+
+        token = Token.objects.get(user=user)
+
+        return Response(
+            {'token': token.key},
+            status=status.HTTP_200_OK
+        )
+
+
 class RegisterView(ObtainAuthToken):
     def post(self, request, *args, **kwargs):
         username = request.data.get("username")
         password = request.data.get("password")
+
+        if not username or not password:
+            return Response(
+                {"error": "Usuário e senha obrigatórios"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
 
         if User.objects.filter(username=username).exists():
             return Response(
