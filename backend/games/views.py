@@ -2,9 +2,16 @@ from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
 from games.serializers import GameSerializer
 from games.models import Game
+from games.igdb_service import search_games
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
+
+
+class GameSearchView(APIView):
+    def get(self, request, search_term):
+        response = search_games(search_term=search_term)
+        return Response(response, status=status.HTTP_200_OK)
 
 
 class GameListInsertView(APIView):
