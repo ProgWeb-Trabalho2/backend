@@ -72,7 +72,29 @@ class MeView(APIView):
 
     def get(self, request):
         user = request.user
+        profile = user.profile
+
         return Response({
             "username": user.username,
             "email": user.email,
+            "bio": profile.bio,
+            "avatar": request.build_absolute_uri(profile.avatar.url) if profile.avatar else None
         })
+
+    def patch(self, request):
+        user = request.user
+        profile = user.profile
+
+        bio = request.data.get("bio")
+        avatar = request.FILES.get("avatar")
+
+        if bio is not None:
+            profile.bio = bio
+
+        if avatar:
+            profile.avatar = avatar
+
+        profile.save()
+
+        return Response({"success": True})
+

@@ -162,3 +162,6 @@ load_dotenv()
 
 IGDB_CLIENT_ID = os.getenv("IGDB_CLIENT_ID")
 IGDB_TOKEN = os.getenv("IGDB_TOKEN")
+
+MEDIA_URL = "/media/"
+MEDIA_ROOT = BASE_DIR / "media"
