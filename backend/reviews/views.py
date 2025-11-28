@@ -14,7 +14,16 @@ from datetime import datetime
 
 class CreateReview(APIView):
     @swagger_auto_schema(
-        request_body=ReviewSerializer,
+        request_body=openapi.Schema(
+            type=openapi.TYPE_OBJECT,
+            required=["rating", "content", "user_token", "game_id"],
+            properties={
+                "rating": openapi.Schema(type=openapi.TYPE_INTEGER),
+                "content": openapi.Schema(type=openapi.TYPE_STRING),
+                "user_token": openapi.Schema(type=openapi.TYPE_STRING),
+                "game_id": openapi.Schema(type=openapi.TYPE_INTEGER),
+            }
+        ),
         responses={
             201: ReviewSerializer,
             400: openapi.Schema(
