@@ -19,3 +19,10 @@ class ReviewUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
 
     def get_queryset(self):
         return Review.objects.filter(user=self.request.user)
+
+class GameReviewListView(generics.ListAPIView):
+    serializer_class = ReviewSerializer
+    permission_classes = [permissions.AllowAny]
+
+    def get_queryset(self):
+        return Review.objects.filter(game_id=self.kwargs["game_id"])
