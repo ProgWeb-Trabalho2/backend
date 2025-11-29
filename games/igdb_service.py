@@ -24,12 +24,13 @@ def make_request(endpoint, query):
     return response.json()
 
 
-def search_games(search_term, limit=10):
+def search_games(search_term, limit=50):
     query = f'''
         search "{search_term}";
         fields name, genres.name, age_ratings.rating_category.rating,
         age_ratings.organization.name, summary, release_dates.date, cover.url;
         limit {limit};
+        where parent_game = null;
     '''
 
     return make_request(endpoint='games', query=query)
