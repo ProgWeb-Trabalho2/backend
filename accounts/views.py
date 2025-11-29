@@ -6,10 +6,10 @@ from django.contrib.auth import authenticate
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.permissions import AllowAny
-
 from rest_framework.decorators import permission_classes, authentication_classes
 from rest_framework.parsers import JSONParser
 
+from reviews.models import Review
 
 @permission_classes([AllowAny])
 @authentication_classes([])
@@ -73,11 +73,13 @@ class MeView(APIView):
     def get(self, request):
         user = request.user
         profile = user.profile
+        review_count = Review.objects.filter(user=request.user).count()
 
         return Response({
             "username": user.username,
             "email": user.email,
             "bio": profile.bio,
+            "reviews": review_count,
             "avatar": request.build_absolute_uri(profile.avatar.url) if profile.avatar else None
         })
 
@@ -98,3 +100,23 @@ class MeView(APIView):
 
         return Response({"success": True})
 
+
+class PublicProfileView(APIView):
+    permission_classes = [AllowAny]
+
+    def get(self, request, user_id):
+        try:
+            user = User.objects.get(id=user_id)
+            profile = user.profile
+        except User.DoesNotExist:
+            return Response({"error": "Usuário não encontrado"}, status=404)
+
+        review_count = Review.objects.filter(user=user).count()
+
+        return Response({
+            "id": user.id,
+            "username": user.username,
+            "bio": profile.bio,
+            "avatar": request.build_absolute_uri(profile.avatar.url) if profile.avatar else None,
+            "reviews": review_count
+        })
