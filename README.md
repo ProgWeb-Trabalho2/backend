@@ -9,7 +9,73 @@ João Marcello Amaral Lima - 2010580
 
 ## Como instalar
 
-Para instalação do backend
+Este projeto é composto por duas aplicações em containers Docker:
+
+Backend: Django REST Framework (SQLite)
+
+Frontend: Aplicação estática servida com Nginx
+
+As imagens já estão publicadas no Docker Hub e podem ser usadas sem necessidade do código fonte.
+
+Antes de começar, você precisa ter instalado:
+
+Docker Desktop / Docker Engine
+Download: https://www.docker.com/products/docker-desktop/
+
+Para verificar se está instalado corretamente:
+
+```console
+docker --version
+```
+
+### Rodar o backend
+
+Baixe a imagem do Docker Hub:  
+```console
+docker pull tulio240/progweb-backend:latest
+```
+
+```console
+docker run -d -p 8000:8000 --name progweb-backend tulio240/progweb-backend:latest  
+```  
+
+O backend estará disponível em:  
+
+http://localhost:8000  
+ 
+
+### Rodar o frontend
+
+Baixe a imagem:    
+
+```console
+docker pull tulio240/progweb-frontend:latest
+```
+
+Execute:  
+
+```console
+docker run -d -p 5500:80 --name progweb-frontend tulio240/progweb-frontend:latest
+```
+
+A aplicação estará disponível no navegador em:
+
+http://localhost:5500
+
+### Ordem de inicialização
+
+🔄 Ordem de inicialização  
+
+O backend precisa estar ativo antes do frontend para que as requisições funcionem corretamente:  
+
+1️⃣ Inicie o backend  
+2️⃣ Inicie o frontend  
+
+Se qualquer um cair, você pode reiniciá-lo:  
+```console
+docker restart progweb-backend  
+docker restart progweb-frontend  
+```
 
 ## Intruções de uso
 
@@ -65,3 +131,7 @@ Usuários podem:
 __Feito__  
 
 Implementamos todas as funcionalidades prometidas.
+
+## Link frontend
+
+https://github.com/ProgWeb-Trabalho2/frontend
